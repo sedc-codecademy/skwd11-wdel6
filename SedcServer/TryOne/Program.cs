@@ -5,8 +5,6 @@ using System.Text;
 var address = IPAddress.Any;
 var port = 668; //the neighbour of the beast
 
-return;
-
 TcpListener listener = new TcpListener(address, port);
 listener.Start();
 
@@ -23,7 +21,7 @@ while (true)
     var byteCount = stream.Read(bytes);
     Console.WriteLine(byteCount);
     var request = Encoding.UTF8.GetString(bytes);
-    Console.WriteLine(request);
+    // Console.WriteLine(request);
     var requestObject = RequestProcessor.ProcessRequest(request);
     var responseObject = ActualProcessor.Process(requestObject);
     var response = OutputGenerator.MakeResponse(responseObject);

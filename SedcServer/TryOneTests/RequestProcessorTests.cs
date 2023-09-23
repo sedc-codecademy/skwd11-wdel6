@@ -5,7 +5,7 @@
         [Fact]
         public void IsValid_test_full_postman_request()
         {
-            var requestText1 = @"POST /from-postman HTTP/1.1
+            var requestText = @"POST /from-postman HTTP/1.1
 Zdravo: SEDC
 Content-Type: application/json
 User-Agent: PostmanRuntime/7.32.3
@@ -19,8 +19,17 @@ Content-Length: 27
 {
     ""one"": ""еден""
 }";
-            var actual = RequestProcessor.IsRequestValid(requestText1);
+            var actual = RequestProcessor.IsRequestValid(requestText);
             var expected = true;
+            Assert.Equal(expected, actual);
+        }
+
+        [Fact]
+        public void IsValid_test_empty_request()
+        {
+            var requestText = @"";
+            var actual = RequestProcessor.IsRequestValid(requestText);
+            var expected = false;
             Assert.Equal(expected, actual);
         }
     }
