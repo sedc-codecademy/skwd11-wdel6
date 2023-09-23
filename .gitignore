@@ -132,3 +132,9 @@ dist
 # Mac OS
 .DS_Store
 
+
+# Dotnet
+bin
+obj
+.vs
+
