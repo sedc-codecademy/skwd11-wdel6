@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 var address = IPAddress.Any;
 var port = 668; //the neighbour of the beast
@@ -18,7 +19,10 @@ while (true)
     Span<byte> bytes = new (buffer);
     var byteCount = stream.Read(bytes);
     Console.WriteLine(byteCount);
-
-    var request = string.Join(",", buffer.Take(byteCount).Select(b => b.ToString()));
+    var request = Encoding.UTF8.GetString(bytes);
     Console.WriteLine(request);
+    var requestObject = RequestProcessor.ProcessRequest(request);
+    var responseObject = ActualProcessor.Process(requestObject);
+    var response = OutputGenerator.MakeResponse(responseObject);
+    stream.Write(response);
 }
