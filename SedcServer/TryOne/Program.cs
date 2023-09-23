@@ -5,8 +5,11 @@ using System.Text;
 var address = IPAddress.Any;
 var port = 668; //the neighbour of the beast
 
+return;
+
 TcpListener listener = new TcpListener(address, port);
 listener.Start();
+
 
 while (true)
 {
