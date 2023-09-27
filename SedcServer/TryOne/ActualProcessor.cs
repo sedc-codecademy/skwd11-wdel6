@@ -1,8 +1,13 @@
 ﻿
+
 internal class ActualProcessor
 {
-    internal static object Process(object requestObject)
+    internal static HttpResponse Process(HttpRequest request)
     {
+        if (request.Method.Equals(Method.Get))
+        {
+
+        }
         return null;
     }
 }

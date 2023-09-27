@@ -8,7 +8,6 @@ var port = 668; //the neighbour of the beast
 TcpListener listener = new TcpListener(address, port);
 listener.Start();
 
-
 while (true)
 {
     // wait for a request
@@ -20,10 +19,11 @@ while (true)
     Span<byte> bytes = new (buffer);
     var byteCount = stream.Read(bytes);
     Console.WriteLine(byteCount);
-    var request = Encoding.UTF8.GetString(bytes);
+    var requestString = Encoding.UTF8.GetString(bytes);
     // Console.WriteLine(request);
-    var requestObject = RequestProcessor.ProcessRequest(request);
-    var responseObject = ActualProcessor.Process(requestObject);
-    var response = OutputGenerator.MakeResponse(responseObject);
-    stream.Write(response);
+    var request = RequestProcessor.ProcessRequest(requestString);
+    var response = ActualProcessor.Process(request);
+    var output = OutputGenerator.MakeResponse(response);
+    stream.Write(output);
 }
+

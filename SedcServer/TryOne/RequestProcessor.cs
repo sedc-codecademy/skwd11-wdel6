@@ -25,10 +25,10 @@ public static class RequestProcessor
         return true;
     }
 
-    internal static object ProcessRequest(string request)
+    internal static HttpRequest ProcessRequest(string request)
     {
         var isValidRequest = IsRequestValid(request);
         Console.WriteLine($"This request is {(isValidRequest ? "valid" : "invalid")}");
-        return null;
+        return new HttpRequest();
     }
 }
