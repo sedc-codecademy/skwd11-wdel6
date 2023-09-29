@@ -16,14 +16,10 @@
     public readonly static Method Trace = new("TRACE");
     public readonly static Method Connect = new("CONNECT");
     public readonly static Method Patch = new("PATCH");
+    public readonly static Method Invalid = new("INVALID");
 
-    //public bool Equals(Method? other)
-    //{
-    //    if (other is null)
-    //    {
-    //        return false;
-    //    }
-    //    return this.Value == other.Value.Value;
-    //}
-
+    public override string ToString()
+    {
+        return Value;
+    }
 }

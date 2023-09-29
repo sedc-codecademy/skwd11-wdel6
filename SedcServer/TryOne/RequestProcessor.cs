@@ -18,10 +18,6 @@ public static class RequestProcessor
         {
             return false;
         }
-        var method = match.Groups[1].Value;
-        var uri = match.Groups[2].Value;
-        Console.WriteLine($"{method} {uri}");
-
         return true;
     }
 
@@ -29,6 +25,38 @@ public static class RequestProcessor
     {
         var isValidRequest = IsRequestValid(request);
         Console.WriteLine($"This request is {(isValidRequest ? "valid" : "invalid")}");
-        return new HttpRequest();
+        if (!isValidRequest)
+        {
+            return InvalidHttpRequest.Invalid;
+        }
+
+        var requestLines = request.Split(Environment.NewLine);
+        var match = requestLineRegex.Match(requestLines[0]);
+        var method = new Method(match.Groups[1].Value);
+        var uri = match.Groups[2].Value;
+        var headers = new Dictionary<string, string>();
+
+        var headerLines = requestLines.Skip(1).TakeWhile(line => !string.IsNullOrEmpty(line)).ToList();
+
+        foreach (var line in headerLines)
+        {
+            var elements = line.Split(": ");
+            var key = elements[0];
+            var value = elements[1];
+            headers.Add(key, value);
+        }
+
+        var body = requestLines
+            .SkipWhile(line => !string.IsNullOrEmpty(line))
+            .Skip(1)
+            .Aggregate(string.Empty, (a, b) => $"{a}{Environment.NewLine}{b}");
+
+        return new HttpRequest
+        {
+            Method = method,
+            Uri = uri,
+            Headers = headers,
+            Body = body
+        };
     }
 }
