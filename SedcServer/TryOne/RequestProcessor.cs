@@ -3,7 +3,7 @@ using System.Text.RegularExpressions;
 
 public static class RequestProcessor
 {
-    private static readonly Regex requestLineRegex = new("^([A-Z]+) /([^ ]+) HTTP/1.1$", RegexOptions.Multiline);
+    private static readonly Regex requestLineRegex = new("^([A-Z]+) /([^ ]*) HTTP/1.1$", RegexOptions.Multiline);
 
     public static bool IsRequestValid(string request)
     {
