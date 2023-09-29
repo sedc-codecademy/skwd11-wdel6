@@ -32,7 +32,7 @@ public static class RequestProcessor
 
         var requestLines = request.Split(Environment.NewLine);
         var match = requestLineRegex.Match(requestLines[0]);
-        var method = new Method(match.Groups[1].Value);
+        var method = new SedcMethod(match.Groups[1].Value);
         var uri = match.Groups[2].Value;
         var headers = new Dictionary<string, string>();
 
@@ -54,8 +54,8 @@ public static class RequestProcessor
         return new HttpRequest
         {
             Method = method,
-            Uri = uri,
-            Headers = headers,
+            Uri = new SedcUri(uri),
+            Headers = new HeaderCollection(headers),
             Body = body
         };
     }

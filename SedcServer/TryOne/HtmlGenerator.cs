@@ -21,13 +21,31 @@ namespace TryOne
 <body>
     <h1>Test</h1>
     <p>Test</p>";
-            if (string.IsNullOrEmpty(request.Uri))
+            if (string.IsNullOrEmpty(request.Uri.FullUri))
             {
                 sb += @$"<p>You requested the root page</p>";
             }
             else
             {
-                sb += @$"<p>Uri is {request.Uri}</p>";
+                sb += @$"<p>Uri is {request.Uri.FullUri}</p>";
+                sb += @$"<p>Path is {request.Uri.FullPath}</p>";
+
+                sb += @$"<p>Paths are</p>";
+                sb += @$"<ul>";
+                foreach (var path in request.Uri.Paths)
+                {
+                    sb += @$"<li>{path}</li>";
+                }
+                sb += @$"</ul>";
+                sb += @$"<p>Query is {request.Uri.FullQuery}</p>";
+
+                sb += @$"<p>Queries are</p>";
+                sb += @$"<ul>";
+                foreach (var (key, value) in request.Uri.Queries)
+                {
+                    sb += @$"<li>{key}: {value}</li>";
+                }
+                sb += @$"</ul>";
             }
             sb += @$"<p>Method is {request.Method}</p>";
 

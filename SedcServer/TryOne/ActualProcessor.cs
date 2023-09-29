@@ -36,7 +36,7 @@ internal class ActualProcessor
         var statusCode = 200;
         string body;
         string contentType;
-        if (request.Method == Method.Get)
+        if (request.Method == SedcMethod.Get)
         {
             (body, contentType) = HtmlGenerator.GetHtml(request);
         } 

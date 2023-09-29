@@ -1,8 +1,8 @@
 ﻿internal class HttpRequest
 {
-    public Method Method { get; init; }
-    public string Uri { get; init; }
-    public Dictionary<string, string> Headers { get; init; }
+    public SedcMethod Method { get; init; } = SedcMethod.Invalid;
+    public SedcUri Uri { get; init; } = SedcUri.Empty;
+    public HeaderCollection Headers { get; init; }
     public string Body { get; init; }
 }
 
@@ -11,9 +11,9 @@ internal class InvalidHttpRequest : HttpRequest
     private static readonly InvalidHttpRequest _request = new();
     private InvalidHttpRequest()
     {
-        Method = Method.Invalid;
-        Uri = string.Empty;
-        Headers = new();
+        Method = SedcMethod.Invalid;
+        Uri = SedcUri.Empty;
+        Headers = new(new Dictionary<string, string>());
         Body = string.Empty;
     }
 
