@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleDemo", "ConsoleDemo\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DisposeMe", "DisposeMe\DisposeMe.csproj", "{65BE78ED-EAF5-42E5-AC08-AFEDF1FDB36E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Accessing", "Accessing\Accessing.csproj", "{74BE5159-33CA-47CD-8DDE-BC7375F44311}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Accessing", "Accessing\Accessing.csproj", "{74BE5159-33CA-47CD-8DDE-BC7375F44311}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Equality", "Equality\Equality.csproj", "{E4A27B7E-CAA4-445E-B5E2-D767CA40626E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Equality", "Equality\Equality.csproj", "{E4A27B7E-CAA4-445E-B5E2-D767CA40626E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BuilderDemo", "BuilderDemo\BuilderDemo.csproj", "{58528A24-06AF-4927-91AD-3BE66E1A24DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{E4A27B7E-CAA4-445E-B5E2-D767CA40626E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4A27B7E-CAA4-445E-B5E2-D767CA40626E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4A27B7E-CAA4-445E-B5E2-D767CA40626E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58528A24-06AF-4927-91AD-3BE66E1A24DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58528A24-06AF-4927-91AD-3BE66E1A24DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58528A24-06AF-4927-91AD-3BE66E1A24DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58528A24-06AF-4927-91AD-3BE66E1A24DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
