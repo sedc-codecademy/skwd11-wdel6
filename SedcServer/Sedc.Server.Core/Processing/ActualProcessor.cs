@@ -16,16 +16,19 @@ namespace Sedc.Server.Core.Processing
     internal class ActualProcessor
     {
         public Logger Logger { get; }
-        public HtmlGenerator Generator { get; }
-        public FileReader FileReader { get; }
-
-        public ApiResponseGenerator ApiGenerator { get; }
-
-        public ActualProcessor(Logger logger) {
+        public List<IGenerator> Generators{ get; }
+        public ActualProcessor(Logger logger)
+        {
             this.Logger = logger;
-            this.Generator = new HtmlGenerator(Logger);
-            this.FileReader = new FileReader(Logger);
-            this.ApiGenerator = new ApiResponseGenerator(Logger);
+            var htmlGenerator = new HtmlGenerator(Logger);
+            var fileReader = new FileReader(Logger);
+            var apiGenerator = new ApiResponseGenerator(Logger);
+
+            this.Generators = new List<IGenerator> {
+                fileReader,
+                htmlGenerator,
+                apiGenerator,
+            };
         }
 
 
@@ -37,26 +40,10 @@ namespace Sedc.Server.Core.Processing
             }
 
             int statusCode = 200;
-            string body;
-            string contentType;
 
-            if (request.Method == SedcMethod.Get)
-            {
-                if (request.Uri.FullPath == "index.html")
-                {
-                    // serve public/index.html file
-                    (body, contentType) = FileReader.GetFileContents(request.Uri.FullPath);
-                } 
-                else
-                {
-                    (body, contentType) = Generator.GetRequestEchoHtml(request);
-                }
+            var generator = Generators.First(g => g.WannaConsume(request));
+            (string body, string contentType) = generator.Generate(request);
 
-            }
-            else
-            {
-                (body, contentType) = ApiGenerator.GetApiResponse(request);
-            }
             var headers = new Dictionary<string, string>
             {
                 { "Content-Type", contentType },

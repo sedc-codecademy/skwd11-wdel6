@@ -1,5 +1,6 @@
 ﻿using Sedc.Server.Core.Logging;
 using Sedc.Server.Interface.Requests;
+using Sedc.Server.Interface.Responses;
 
 using System;
 using System.Collections.Generic;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Sedc.Server.Core.Processing
 {
-    internal class ApiResponseGenerator
+    internal class ApiResponseGenerator: IGenerator
     {
         public Logger Logger { get; }
         public ApiResponseGenerator(Logger logger)
@@ -18,12 +19,16 @@ namespace Sedc.Server.Core.Processing
             Logger = logger;
         }
 
-        internal (string Content, string Type) GetApiResponse(HttpRequest request)
+        public (string Content, string Type) Generate(HttpRequest request)
         {
             var body = "Hello world!";
             var contentType = "text/plain";
             return (body, contentType);
         }
 
+        public bool WannaConsume(HttpRequest request)
+        {
+            return true;
+        }
     }
 }

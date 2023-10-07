@@ -1,5 +1,7 @@
 ﻿using Sedc.Server.Core.Logging;
+using Sedc.Server.Interface.Entities;
 using Sedc.Server.Interface.Requests;
+using Sedc.Server.Interface.Responses;
 
 using System;
 using System.Collections.Generic;
@@ -9,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Sedc.Server.Core.Processing
 {
-    internal class HtmlGenerator
+    internal class HtmlGenerator: IGenerator
     {
         public Logger Logger { get; }
         public HtmlGenerator(Logger logger)
@@ -70,6 +72,13 @@ namespace Sedc.Server.Core.Processing
             var response = sb.ToString();
             Logger.Debug($"Generated {response.Length} characters of response");
             return (sb.ToString(), "text/html");
+        }
+
+        public (string Content, string Type) Generate(HttpRequest request) => GetRequestEchoHtml(request);
+
+        public bool WannaConsume(HttpRequest request)
+        {
+            return (request.Method == SedcMethod.Get);
         }
     }
 }
