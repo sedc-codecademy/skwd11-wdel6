@@ -4,16 +4,29 @@ using System.Text;
 using Sedc.Server.Interface.Exceptions;
 using Sedc.Server.Core.Requests;
 using Sedc.Server.Core.Processing;
+using Sedc.Server.Interface.Configuration;
+using Sedc.Server.Core.Logging;
 
 namespace Sedc.Server.Core
 {
     public class Server
     {
         private int Port { get; init;}
-        public Server(int port)
+        private Logger Logger{ get; init; }
+
+        private ActualProcessor processor;
+        public Server(ServerOptions options)
         {
-            this.Port = port;
+            this.Port = options.Port;
+            this.Logger = new Logger(options.LogLevel);
+            this.processor = new ActualProcessor(Logger);
         }
+
+        public Server(): this(ServerOptions.Default)
+        {
+
+        }
+
         public void Start()
         {
             var address = IPAddress.Any;
@@ -22,32 +35,34 @@ namespace Sedc.Server.Core
             try
             {
                 listener.Start();
+                Logger.Info("Server started successfully");
             } 
             catch (Exception ex)
             {
-                var exception = new SedcServerException("Failed to start server, maybe port is in use", ex);
+                var message = "Failed to start server, maybe port is in use";
+                Logger.Fatal(message);
+                var exception = new SedcServerException(message, ex);
                 throw exception;
             }
 
             while (true)
             {
                 // wait for a request
-                Console.WriteLine($"Waiting for tcp client");
+                Logger.Debug($"Waiting for tcp client");
                 var client = listener.AcceptTcpClient();
-                Console.WriteLine($"Accepted tcp client");
+                Logger.Debug($"Accepted tcp client");
 
                 using var stream = client.GetStream();
                 byte[] buffer = new byte[8192];
                 Span<byte> bytes = new(buffer);
                 var byteCount = stream.Read(bytes);
-                Console.WriteLine(byteCount);
+                Logger.Debug($"Received {byteCount} bytes");
                 var requestString = Encoding.UTF8.GetString(bytes);
-                // Console.WriteLine(requestString);
 
-                var request = RequestProcessor.ProcessRequest(requestString);
-                var response = ActualProcessor.Process(request);
-                //var output = OutputGenerator.MakeResponse(response);
-                //stream.Write(output);
+                var request = RequestProcessor.ProcessRequest(requestString, Logger);
+                var response = processor.Process(request);
+                var output = OutputGenerator.MakeResponse(response, Logger);
+                stream.Write(output);
             }
 
         }

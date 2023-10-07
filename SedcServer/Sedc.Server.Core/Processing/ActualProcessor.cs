@@ -1,4 +1,5 @@
-﻿using Sedc.Server.Core.Requests;
+﻿using Sedc.Server.Core.Logging;
+using Sedc.Server.Core.Requests;
 using Sedc.Server.Core.Responses;
 using Sedc.Server.Interface.Entities;
 using Sedc.Server.Interface.Requests;
@@ -12,23 +13,24 @@ using System.Threading.Tasks;
 
 namespace Sedc.Server.Core.Processing
 {
-    internal static class ActualProcessor
+    internal class ActualProcessor
     {
-        internal static HttpResponse Process(HttpRequest request)
+        public Logger Logger { get; }
+        public HtmlGenerator Generator { get; }
+        public FileReader FileReader { get; }
+
+        public ApiResponseGenerator ApiGenerator { get; }
+
+        public ActualProcessor(Logger logger) {
+            this.Logger = logger;
+            this.Generator = new HtmlGenerator(Logger);
+            this.FileReader = new FileReader(Logger);
+            this.ApiGenerator = new ApiResponseGenerator(Logger);
+        }
+
+
+        internal HttpResponse Process(HttpRequest request)
         {
-            // Code that displays the request object we got
-            //Console.WriteLine($"Processing request: {request.Method} {request.Uri}");
-
-            //foreach (var (key, value) in request.Headers)
-            //{
-            //    Console.WriteLine($"The value of {key} is {value}");
-            //}
-
-            //Console.WriteLine();
-
-            //Console.WriteLine("Body is");
-            //Console.WriteLine(request.Body);
-
             if (request is InvalidHttpRequest)
             {
                 return new InvalidHttpResponse();
@@ -40,12 +42,20 @@ namespace Sedc.Server.Core.Processing
 
             if (request.Method == SedcMethod.Get)
             {
-                (body, contentType) = HtmlGenerator.GetRequestEchoHtml(request);
+                if (request.Uri.FullPath == "index.html")
+                {
+                    // serve public/index.html file
+                    (body, contentType) = FileReader.GetFileContents(request.Uri.FullPath);
+                } 
+                else
+                {
+                    (body, contentType) = Generator.GetRequestEchoHtml(request);
+                }
+
             }
             else
             {
-                body = "Hello world!";
-                contentType = "text/plain";
+                (body, contentType) = ApiGenerator.GetApiResponse(request);
             }
             var headers = new Dictionary<string, string>
             {

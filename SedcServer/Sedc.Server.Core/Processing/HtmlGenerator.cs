@@ -1,4 +1,5 @@
-﻿using Sedc.Server.Interface.Requests;
+﻿using Sedc.Server.Core.Logging;
+using Sedc.Server.Interface.Requests;
 
 using System;
 using System.Collections.Generic;
@@ -6,13 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sedc.Server.Core.Responses
+namespace Sedc.Server.Core.Processing
 {
-    internal static class HtmlGenerator
+    internal class HtmlGenerator
     {
-        //public HtmlGenerator() { }
+        public Logger Logger { get; }
+        public HtmlGenerator(Logger logger)
+        {
+            Logger = logger;
+        }
 
-        public static (string Content, string Type) GetRequestEchoHtml(HttpRequest request)
+        public (string Content, string Type) GetRequestEchoHtml(HttpRequest request)
         {
             var sb = new StringBuilder();
             sb.AppendLine(@$"<!DOCTYPE html>
@@ -29,7 +34,7 @@ namespace Sedc.Server.Core.Responses
             }
             else
             {
-                    ;
+                ;
                 sb.AppendLine($@"<p>Path is {request.Uri.FullPath}</p>");
 
                 sb.AppendLine($@"<p>Paths are</p>");
@@ -61,6 +66,9 @@ namespace Sedc.Server.Core.Responses
 
             sb.AppendLine(@"</body>
 </html>");
+
+            var response = sb.ToString();
+            Logger.Debug($"Generated {response.Length} characters of response");
             return (sb.ToString(), "text/html");
         }
     }

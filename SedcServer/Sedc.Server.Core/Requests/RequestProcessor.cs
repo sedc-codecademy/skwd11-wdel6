@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Sedc.Server.Interface.Entities;
 using Sedc.Server.Interface.Requests;
 using System.Text.RegularExpressions;
+using Sedc.Server.Interface.Configuration;
+using Sedc.Server.Core.Logging;
 
 namespace Sedc.Server.Core.Requests
 {
@@ -30,12 +32,17 @@ namespace Sedc.Server.Core.Requests
             return true;
         }
 
-        internal static HttpRequest ProcessRequest(string request)
+        internal static HttpRequest ProcessRequest(string request, Logger logger)
         {
             var isValidRequest = IsRequestValid(request);
-            Console.WriteLine($"This request is {(isValidRequest ? "valid" : "invalid")}");
-            if (!isValidRequest)
+
+            if (isValidRequest)
             {
+                logger.Debug("This request is valid");
+            } 
+            else
+            {
+                logger.Info("This request is invalid");
                 return InvalidHttpRequest.Invalid;
             }
 
