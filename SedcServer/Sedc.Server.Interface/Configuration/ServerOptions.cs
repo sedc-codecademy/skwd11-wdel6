@@ -9,13 +9,15 @@ using System.Threading.Tasks;
 
 namespace Sedc.Server.Interface.Configuration
 {
+    public delegate LoggerBase LoggerMakerDelegate (LogLevel logLevel);
+
     public class ServerOptions
     {
         public int Port { get; private set; }
 
         public LogLevel LogLevel { get; private set; }
 
-        public LoggerBase Logger { get; private set; }
+        public LoggerMakerDelegate LoggerMaker { get; private set; }
 
         private ServerOptions() { }
 
@@ -25,9 +27,9 @@ namespace Sedc.Server.Interface.Configuration
             return this;
         }
 
-        public ServerOptions SetLogger(LoggerBase logger)
+        public ServerOptions SetLogger(LoggerMakerDelegate loggerMaker)
         {
-            this.Logger = logger;
+            this.LoggerMaker = loggerMaker;
             return this;
         }
 
@@ -40,46 +42,6 @@ namespace Sedc.Server.Interface.Configuration
         public ServerOptions EnableDebugging()
         {
             this.LogLevel = LogLevel.Debug;
-            // bad code - don't do this
-            Console.WriteLine($"Name of the logger type is {Logger.GetType().Name}");
-            Console.WriteLine("Let's see if we can find a suitable constructor");
-
-            Type loggerType = Logger.GetType();
-            var constructors = loggerType.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
-            var constructor = constructors.FirstOrDefault(ctor =>
-            {
-                var parameters = ctor.GetParameters();
-                if (parameters.Length != 1)
-                {
-                    return false;
-                }
-                var paramType = parameters[0].ParameterType;
-                return paramType == typeof(LogLevel);
-            });
-
-            if (constructor == null)
-            {
-                Logger.Error("Didn't find a suitable logger, reverting to basic console logger");
-                this.Logger = new Logger(this.LogLevel);
-                return this;
-            }
-
-            Logger = (LoggerBase)constructor.Invoke([LogLevel]);
-
-            //Console.WriteLine($"Found {constructors.Length} constructors");
-            //foreach (var constructor in constructors)
-            //{
-            //    var @params = constructor.GetParameters();
-            //    Console.WriteLine($"Constructor has {@params.Length} parameters");
-            //    foreach (var param in @params)
-            //    {
-            //        Console.WriteLine($"Parameter is called {param.Name}");
-            //        Console.WriteLine($"Parameter is of type {param.ParameterType.FullName}");
-            //    }
-            //}
-
-
-            // this.Logger = new Logger(this.LogLevel);
             return this;
         }
 
@@ -92,7 +54,7 @@ namespace Sedc.Server.Interface.Configuration
         private static ServerOptions _default() => new() { 
             Port = 668,
             LogLevel = LogLevel.Info,
-            Logger = new Logger(LogLevel.Info)
+            LoggerMaker = logLevel => new Logger(logLevel)
         };
         public static ServerOptions Default => _default();
 

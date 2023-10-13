@@ -10,7 +10,7 @@ var port = 668; //the neighbour of the beast;
 var options = ServerOptions
     .Default
     .SetPort(port)
-    .SetLogger(new TryTwoLogger("Try2", LogLevel.Info))
+    .SetLogger(logLevel => new TryTwoLogger("Try2", logLevel))
     .EnableDebugging();
 
 var server = new Server(options);
