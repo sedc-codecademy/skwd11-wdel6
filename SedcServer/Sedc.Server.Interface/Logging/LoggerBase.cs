@@ -18,7 +18,7 @@ namespace Sedc.Server.Interface.Logging
         {
             if (level >= LogLevel)
             {
-                Console.WriteLine(message);
+                OutputMessage(message);
             }
         }
 

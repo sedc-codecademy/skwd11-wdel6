@@ -7,19 +7,18 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TryTwo
+namespace Sedc.Server.Interface.Logging
 {
-    internal class TryTwoLogger : LoggerBase
+    public class Logger : LoggerBase
     {
-        public string Header { get; set; }
-        public TryTwoLogger(string header, LogLevel logLevel) {
+        public Logger(LogLevel logLevel)
+        {
             this.LogLevel = logLevel;
-            this.Header = header;
         }
 
         protected override void OutputMessage(string message)
         {
-            Console.WriteLine($"[{Header}]: {message}");
+            Console.WriteLine(message);
         }
     }
 }

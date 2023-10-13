@@ -19,7 +19,7 @@ namespace Sedc.Server.Core
         public Server(ServerOptions options)
         {
             this.Port = options.Port;
-            this.Logger = new Logger(options.LogLevel);
+            this.Logger = options.Logger;
             this.processor = new ActualProcessor(Logger);
         }
 
