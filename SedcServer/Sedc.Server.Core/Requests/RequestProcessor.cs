@@ -8,6 +8,7 @@ using Sedc.Server.Interface.Requests;
 using System.Text.RegularExpressions;
 using Sedc.Server.Interface.Configuration;
 using Sedc.Server.Core.Logging;
+using Sedc.Server.Interface.Logging;
 
 namespace Sedc.Server.Core.Requests
 {
@@ -32,7 +33,7 @@ namespace Sedc.Server.Core.Requests
             return true;
         }
 
-        internal static HttpRequest ProcessRequest(string request, Logger logger)
+        internal static HttpRequest ProcessRequest(string request, LoggerBase logger)
         {
             var isValidRequest = IsRequestValid(request);
 

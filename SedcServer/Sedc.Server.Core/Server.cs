@@ -6,13 +6,14 @@ using Sedc.Server.Core.Requests;
 using Sedc.Server.Core.Processing;
 using Sedc.Server.Interface.Configuration;
 using Sedc.Server.Core.Logging;
+using Sedc.Server.Interface.Logging;
 
 namespace Sedc.Server.Core
 {
     public class Server
     {
         private int Port { get; init;}
-        private Logger Logger{ get; init; }
+        private LoggerBase Logger{ get; init; }
 
         private ActualProcessor processor;
         public Server(ServerOptions options)

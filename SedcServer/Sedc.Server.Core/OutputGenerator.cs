@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Sedc.Server.Core.Logging;
+using Sedc.Server.Interface.Logging;
 using Sedc.Server.Interface.Responses;
 
 namespace Sedc.Server.Core
@@ -12,14 +13,14 @@ namespace Sedc.Server.Core
 
     internal static class OutputGenerator
     {
-        internal static ReadOnlySpan<byte> MakeResponse(HttpResponse response, Logger logger)
+        internal static ReadOnlySpan<byte> MakeResponse(HttpResponse response, LoggerBase logger)
         {
             var responseString = GetResponseString(response, logger);
             var bytes = Encoding.UTF8.GetBytes(responseString);
             return bytes;
         }
 
-        private static string GetResponseString(HttpResponse response, Logger logger)
+        private static string GetResponseString(HttpResponse response, LoggerBase logger)
         {
             var sb = new StringBuilder();
             sb.AppendLine($"HTTP/1.1 {response.StatusCode}");

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Sedc.Server.Interface.Logging;
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,9 @@ namespace Sedc.Server.Interface.Configuration
         public int Port { get; private set; }
 
         public LogLevel LogLevel { get; private set; }
+
+        public LoggerBase Logger { get; private set; }
+
         private ServerOptions() { }
 
         public ServerOptions SetPort(int port)
@@ -41,6 +46,7 @@ namespace Sedc.Server.Interface.Configuration
         private static ServerOptions _default() => new() { 
             Port = 668,
             LogLevel = LogLevel.Info,
+            Logger = new Logger(LogLevel.Info)
         };
         public static ServerOptions Default => _default();
 

@@ -1,5 +1,6 @@
 ﻿using Sedc.Server.Core.Logging;
 using Sedc.Server.Interface.Entities;
+using Sedc.Server.Interface.Logging;
 using Sedc.Server.Interface.Requests;
 using Sedc.Server.Interface.Responses;
 
@@ -13,8 +14,8 @@ namespace Sedc.Server.Core.Processing
 {
     internal class FileReader: IGenerator
     {
-        public Logger Logger { get; }
-        public FileReader(Logger logger)
+        public LoggerBase Logger { get; }
+        public FileReader(LoggerBase logger)
         {
             Logger = logger;
         }

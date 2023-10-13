@@ -2,6 +2,7 @@
 using Sedc.Server.Core.Requests;
 using Sedc.Server.Core.Responses;
 using Sedc.Server.Interface.Entities;
+using Sedc.Server.Interface.Logging;
 using Sedc.Server.Interface.Requests;
 using Sedc.Server.Interface.Responses;
 
@@ -15,9 +16,9 @@ namespace Sedc.Server.Core.Processing
 {
     internal class ActualProcessor
     {
-        public Logger Logger { get; }
+        public LoggerBase Logger { get; }
         public List<IGenerator> Generators{ get; }
-        public ActualProcessor(Logger logger)
+        public ActualProcessor(LoggerBase logger)
         {
             this.Logger = logger;
             var htmlGenerator = new HtmlGenerator(Logger);

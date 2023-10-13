@@ -7,18 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Sedc.Server.Core.Logging
+namespace TryTwo
 {
-    internal class Logger : LoggerBase
+    internal class TryTwoLogger : LoggerBase
     {
-        public Logger(LogLevel logLevel)
-        {
+        public TryTwoLogger(LogLevel logLevel) {
             this.LogLevel = logLevel;
         }
 
         protected override void OutputMessage(string message)
         {
-            Console.WriteLine(message);
+            Console.WriteLine($"[TryTwo]: {message}");
         }
     }
 }

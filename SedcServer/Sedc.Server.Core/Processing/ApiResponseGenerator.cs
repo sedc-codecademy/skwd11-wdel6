@@ -1,4 +1,5 @@
 ﻿using Sedc.Server.Core.Logging;
+using Sedc.Server.Interface.Logging;
 using Sedc.Server.Interface.Requests;
 using Sedc.Server.Interface.Responses;
 
@@ -13,8 +14,8 @@ namespace Sedc.Server.Core.Processing
 {
     internal class ApiResponseGenerator: IGenerator
     {
-        public Logger Logger { get; }
-        public ApiResponseGenerator(Logger logger)
+        public LoggerBase Logger { get; }
+        public ApiResponseGenerator(LoggerBase logger)
         {
             Logger = logger;
         }
