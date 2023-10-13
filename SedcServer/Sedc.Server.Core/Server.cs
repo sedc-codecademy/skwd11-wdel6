@@ -67,6 +67,11 @@ namespace Sedc.Server.Core
             }
 
         }
+
+        public void RegisterStaticSite(string folderPath, string sitePath)
+        {
+            processor.RegisterGenerator(new FolderReader(folderPath, sitePath, Logger));
+        }
     }
 
 }

@@ -1,6 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-using Sedc.Server.Core;
+﻿using Sedc.Server.Core;
 using Sedc.Server.Interface.Configuration;
 
 using TryTwo;
@@ -14,6 +12,9 @@ var options = ServerOptions
     .EnableDebugging();
 
 var server = new Server(options);
+
+server.RegisterStaticSite("public", "site");
+
 
 //server.Configure();
 

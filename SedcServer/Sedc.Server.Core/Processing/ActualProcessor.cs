@@ -17,7 +17,8 @@ namespace Sedc.Server.Core.Processing
     internal class ActualProcessor
     {
         public LoggerBase Logger { get; }
-        public List<IGenerator> Generators{ get; }
+
+        private readonly List<IGenerator> generators;
         public ActualProcessor(LoggerBase logger)
         {
             this.Logger = logger;
@@ -25,11 +26,16 @@ namespace Sedc.Server.Core.Processing
             var fileReader = new FileReader(Logger);
             var apiGenerator = new ApiResponseGenerator(Logger);
 
-            this.Generators = new List<IGenerator> {
+            this.generators = [
                 fileReader,
                 htmlGenerator,
                 apiGenerator,
-            };
+            ];
+        }
+
+        public void RegisterGenerator(IGenerator generator)
+        {
+            this.generators.Insert(0, generator);
         }
 
 
@@ -42,7 +48,7 @@ namespace Sedc.Server.Core.Processing
 
             int statusCode = 200;
 
-            var generator = Generators.First(g => g.WannaConsume(request));
+            var generator = generators.First(g => g.WannaConsume(request));
             (string body, string contentType) = generator.Generate(request);
 
             var headers = new Dictionary<string, string>
