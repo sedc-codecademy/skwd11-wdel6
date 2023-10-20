@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Sedc.Server.Interface.Configuration
 {
-    public delegate LoggerBase LoggerMakerDelegate (LogLevel logLevel);
+    // public delegate LoggerBase LoggerMakerDelegate (LogLevel logLevel);
 
     public class ServerOptions
     {
@@ -17,7 +17,7 @@ namespace Sedc.Server.Interface.Configuration
 
         public LogLevel LogLevel { get; private set; }
 
-        public LoggerMakerDelegate LoggerMaker { get; private set; }
+        public Func<LogLevel, LoggerBase> LoggerMaker { get; private set; }
 
         private ServerOptions() { }
 
@@ -27,7 +27,7 @@ namespace Sedc.Server.Interface.Configuration
             return this;
         }
 
-        public ServerOptions SetLogger(LoggerMakerDelegate loggerMaker)
+        public ServerOptions SetLogger(Func<LogLevel, LoggerBase> loggerMaker)
         {
             this.LoggerMaker = loggerMaker;
             return this;

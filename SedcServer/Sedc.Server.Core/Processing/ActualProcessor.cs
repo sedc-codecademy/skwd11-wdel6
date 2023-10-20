@@ -35,6 +35,7 @@ namespace Sedc.Server.Core.Processing
 
         public void RegisterGenerator(IGenerator generator)
         {
+            Logger.Info($"Registered new generator {generator.Name}");
             this.generators.Insert(0, generator);
         }
 
@@ -46,23 +47,20 @@ namespace Sedc.Server.Core.Processing
                 return new InvalidHttpResponse();
             }
 
-            int statusCode = 200;
-
             var generator = generators.First(g => g.WannaConsume(request));
-            (string body, string contentType) = generator.Generate(request);
-
-            var headers = new Dictionary<string, string>
+            Logger.Debug($"Selected {generator.Name} to respond");
+            try
             {
-                { "Content-Type", contentType },
-                { "Content-Length", body.Length.ToString() }
-            };
-
-            return new HttpResponse
+                var response = generator.Generate(request);
+                return response;
+            }
+            catch (Exception ex)
             {
-                Body = body,
-                StatusCode = statusCode,
-                Headers = HeaderCollection.FromDictionary(headers)
-            };
+                var message = $"Generator {generator.Name} threw an exception of type {ex.GetType().FullName} with a message {ex.Message}";
+                Logger.Error(message);
+                return new InvalidHttpResponse(500, message);
+            }
+
         }
     }
 }

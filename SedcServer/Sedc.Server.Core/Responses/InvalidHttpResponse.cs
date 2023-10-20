@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Sedc.Server.Core.Responses
 {
-    internal class InvalidHttpResponse : HttpResponse
+    internal class InvalidHttpResponse : HttpResponse<string>
     {
         public InvalidHttpResponse() : base()
         {
@@ -20,6 +20,18 @@ namespace Sedc.Server.Core.Responses
             {
                 { "Content-Type", "text/plain" },
                 { "Content-Length", "11" }
+            };
+            Headers = HeaderCollection.FromDictionary(headers);
+        }
+
+        public InvalidHttpResponse(int statusCode, string message)
+        {
+            StatusCode = statusCode; 
+            Body = message;
+            var headers = new Dictionary<string, string>
+            {
+                { "Content-Type", "text/plain" },
+                { "Content-Length", message.Length.ToString() }
             };
             Headers = HeaderCollection.FromDictionary(headers);
         }

@@ -7,6 +7,7 @@ using Sedc.Server.Interface.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,12 +16,14 @@ namespace Sedc.Server.Core.Processing
     internal class HtmlGenerator: IGenerator
     {
         public LoggerBase Logger { get; }
+        public string Name { get; } = "Default HTML Generator";
+
         public HtmlGenerator(LoggerBase logger)
         {
             Logger = logger;
         }
 
-        public (string Content, string Type) GetRequestEchoHtml(HttpRequest request)
+        private (string Content, string Type) GetRequestEchoHtml(HttpRequest request)
         {
             var sb = new StringBuilder();
             sb.AppendLine(@$"<!DOCTYPE html>
@@ -75,7 +78,23 @@ namespace Sedc.Server.Core.Processing
             return (sb.ToString(), "text/html");
         }
 
-        public (string Content, string Type) Generate(HttpRequest request) => GetRequestEchoHtml(request);
+        public HttpResponse Generate(HttpRequest request) {
+
+            (var content, var contentType) = GetRequestEchoHtml(request);
+            var statusCode = 200;
+            var headers = new Dictionary<string, string>
+            {
+                { "Content-Type", contentType },
+                { "Content-Length", content.Length.ToString() }
+            };
+
+            return new StringHttpResponse
+            {
+                Body = content,
+                StatusCode = statusCode,
+                Headers = HeaderCollection.FromDictionary(headers)
+            };
+        }
 
         public bool WannaConsume(HttpRequest request)
         {

@@ -7,6 +7,7 @@ using Sedc.Server.Core.Processing;
 using Sedc.Server.Interface.Configuration;
 using Sedc.Server.Core.Logging;
 using Sedc.Server.Interface.Logging;
+using Sedc.Server.Interface.Controllers;
 
 namespace Sedc.Server.Core
 {
@@ -65,12 +66,16 @@ namespace Sedc.Server.Core
                 var output = OutputGenerator.MakeResponse(response, Logger);
                 stream.Write(output);
             }
-
         }
 
         public void RegisterStaticSite(string folderPath, string sitePath)
         {
             processor.RegisterGenerator(new FolderReader(folderPath, sitePath, Logger));
+        }
+
+        public void RegisterController<T>(string sitePath) where T: IController
+        {
+            // throw new NotImplementedException();
         }
     }
 

@@ -11,7 +11,8 @@ namespace Sedc.Server.Interface.Responses
 {
     public interface IGenerator
     {
+        string Name { get; }
         bool WannaConsume(HttpRequest request);
-        (string Content, string Type) Generate(HttpRequest request);
+        HttpResponse Generate(HttpRequest request);
     }
 }

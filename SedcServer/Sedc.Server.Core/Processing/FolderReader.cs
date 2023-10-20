@@ -1,4 +1,5 @@
 ﻿using Sedc.Server.Core.Logging;
+using Sedc.Server.Core.Responses;
 using Sedc.Server.Interface.Entities;
 using Sedc.Server.Interface.Logging;
 using Sedc.Server.Interface.Requests;
@@ -17,6 +18,8 @@ namespace Sedc.Server.Core.Processing
         public string FolderPath { get; }
         public string SitePath { get; }
         public LoggerBase Logger { get; }
+        public string Name { get => $"Folder Reader for path {FolderPath} at site {SitePath}"; } 
+
         public FolderReader(string folderPath, string sitePath, LoggerBase logger)
         {
             FolderPath = folderPath;
@@ -24,26 +27,77 @@ namespace Sedc.Server.Core.Processing
             Logger = logger;
         }
 
-        internal (string Content, string Type) GetFileContents(string filename)
+        internal string GetTextFileContents(string filename)
         {
             var realPath = Path.Combine(FolderPath, filename);
-            var extension = Path.GetExtension(filename);
-            var contentType = extension.ToLowerInvariant() switch
-            {
-                ".css" => "text/css",
-                ".txt" => "text/plain",
-                _ => "text/html"
-            };
-
             string result = File.ReadAllText(realPath, Encoding.UTF8);
-            return (result, contentType);
+            return result;
         }
 
-        public (string Content, string Type) Generate(HttpRequest request)
+        internal byte[] GetBinaryFileContents(string filename)
+        {
+            var realPath = Path.Combine(FolderPath, filename);
+            var result = File.ReadAllBytes(realPath);
+            return result;
+        }
+
+        internal (string ContentType, bool IsBinary) GetContentType(string filename)
+        {
+            var extension = Path.GetExtension(filename);
+            var result = extension.ToLowerInvariant() switch
+            {
+                ".css" => ("text/css", false),
+                ".txt" => ("text/plain", false),
+                ".png" => ("image/png", true),
+                ".js" => ("application/javascript", false),
+                _ => ("text/html", false)
+            };
+
+            return result;
+        }
+
+        public HttpResponse Generate(HttpRequest request)
         {
             var fileName = GetFileName(request.Uri);
-            var response = GetFileContents(fileName);
-            return response;
+            (var contentType, var isBinary) = GetContentType(fileName);
+            var statusCode = 200;
+
+            var realPath = Path.Combine(FolderPath, fileName);
+            if (!File.Exists(realPath))
+            {
+                return new InvalidHttpResponse(404, $"File {fileName} not found");
+            }
+
+            if (isBinary)
+            {
+                var body = GetBinaryFileContents(fileName);
+                var headers = new Dictionary<string, string>
+                {
+                    { "Content-Type", contentType },
+                    { "Content-Length", body.Length.ToString() }
+                };
+                return new BinaryHttpResponse
+                {
+                    Body = body,
+                    StatusCode = statusCode,
+                    Headers = HeaderCollection.FromDictionary(headers)
+                };
+            } 
+            else
+            {
+                var body = GetTextFileContents(fileName);
+                var headers = new Dictionary<string, string>
+                {
+                    { "Content-Type", contentType },
+                    { "Content-Length", body.Length.ToString() }
+                };
+                return new StringHttpResponse
+                {
+                    Body = body,
+                    StatusCode = statusCode,
+                    Headers = HeaderCollection.FromDictionary(headers)
+                };
+            }
         }
 
         private string GetFileName(SedcUri uri)

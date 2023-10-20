@@ -2,6 +2,7 @@
 using Sedc.Server.Interface.Configuration;
 
 using TryTwo;
+using TryTwo.controllers;
 
 
 var port = 668; //the neighbour of the beast;
@@ -14,8 +15,8 @@ var options = ServerOptions
 var server = new Server(options);
 
 server.RegisterStaticSite("public", "site");
+server.RegisterStaticSite(@"angular-test\dist\angular-test", "angular");
 
-
-//server.Configure();
+server.RegisterController<Calculator>("calculator");
 
 server.Start();

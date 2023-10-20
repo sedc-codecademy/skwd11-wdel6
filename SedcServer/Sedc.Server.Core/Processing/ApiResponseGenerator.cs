@@ -1,4 +1,5 @@
 ﻿using Sedc.Server.Core.Logging;
+using Sedc.Server.Interface.Entities;
 using Sedc.Server.Interface.Logging;
 using Sedc.Server.Interface.Requests;
 using Sedc.Server.Interface.Responses;
@@ -15,16 +16,30 @@ namespace Sedc.Server.Core.Processing
     internal class ApiResponseGenerator: IGenerator
     {
         public LoggerBase Logger { get; }
+        public string Name { get; } = "Default API Generator";
+
         public ApiResponseGenerator(LoggerBase logger)
         {
             Logger = logger;
         }
 
-        public (string Content, string Type) Generate(HttpRequest request)
+        public HttpResponse Generate(HttpRequest request)
         {
             var body = "Hello world!";
             var contentType = "text/plain";
-            return (body, contentType);
+            var statusCode = 200;
+            var headers = new Dictionary<string, string>
+            {
+                { "Content-Type", contentType },
+                { "Content-Length", body.Length.ToString() }
+            };
+
+            return new StringHttpResponse
+            {
+                Body = body,
+                StatusCode = statusCode,
+                Headers = HeaderCollection.FromDictionary(headers)
+            };
         }
 
         public bool WannaConsume(HttpRequest request)

@@ -7,6 +7,8 @@ using Sedc.Server.Interface.Responses;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mime;
+using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,6 +17,8 @@ namespace Sedc.Server.Core.Processing
     internal class FileReader: IGenerator
     {
         public LoggerBase Logger { get; }
+        public string Name { get; } = "Default index.html Generator";
+
         public FileReader(LoggerBase logger)
         {
             Logger = logger;
@@ -27,9 +31,22 @@ namespace Sedc.Server.Core.Processing
             return (result, "text/html");
         }
 
-        public (string Content, string Type) Generate(HttpRequest request)
+        public HttpResponse Generate(HttpRequest request)
         {
-            return GetFileContents(request.Uri.FullPath);
+            (var content, var contentType) = GetFileContents(request.Uri.FullPath);
+            var statusCode = 200;
+            var headers = new Dictionary<string, string>
+            {
+                { "Content-Type", contentType },
+                { "Content-Length", content.Length.ToString() }
+            };
+
+            return new StringHttpResponse
+            {
+                Body = content,
+                StatusCode = statusCode,
+                Headers = HeaderCollection.FromDictionary(headers)
+            };
         }
 
         public bool WannaConsume(HttpRequest request)
