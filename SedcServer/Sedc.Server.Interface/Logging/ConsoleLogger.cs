@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Sedc.Server.Interface.Logging
 {
-    public class Logger : LoggerBase
+    public class ConsoleLogger : LoggerBase
     {
-        public Logger(LogLevel logLevel)
+        public ConsoleLogger(LogLevel logLevel)
         {
             this.LogLevel = logLevel;
         }

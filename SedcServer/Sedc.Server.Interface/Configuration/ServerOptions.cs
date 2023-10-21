@@ -54,7 +54,7 @@ namespace Sedc.Server.Interface.Configuration
         private static ServerOptions _default() => new() { 
             Port = 668,
             LogLevel = LogLevel.Info,
-            LoggerMaker = logLevel => new Logger(logLevel)
+            LoggerMaker = logLevel => new ConsoleLogger(logLevel)
         };
         public static ServerOptions Default => _default();
 

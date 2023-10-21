@@ -13,9 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Equality", "Equality\Equali
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BuilderDemo", "BuilderDemo\BuilderDemo.csproj", "{58528A24-06AF-4927-91AD-3BE66E1A24DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abstraction", "Abstraction\Abstraction.csproj", "{454DE78F-0DEC-49A7-8D05-404C0E19B97C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abstraction", "Abstraction\Abstraction.csproj", "{454DE78F-0DEC-49A7-8D05-404C0E19B97C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Delegating", "Delegating\Delegating.csproj", "{F9F9CE10-C236-4E28-B486-91AD20B38948}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Delegating", "Delegating\Delegating.csproj", "{F9F9CE10-C236-4E28-B486-91AD20B38948}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attributing", "Attributing\Attributing.csproj", "{B0410A0C-DC68-4793-BF45-FF6B0E07511D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{F9F9CE10-C236-4E28-B486-91AD20B38948}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F9F9CE10-C236-4E28-B486-91AD20B38948}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F9F9CE10-C236-4E28-B486-91AD20B38948}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0410A0C-DC68-4793-BF45-FF6B0E07511D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0410A0C-DC68-4793-BF45-FF6B0E07511D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0410A0C-DC68-4793-BF45-FF6B0E07511D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0410A0C-DC68-4793-BF45-FF6B0E07511D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

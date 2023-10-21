@@ -24,7 +24,7 @@ namespace Sedc.Server.Core.Processing
             this.Logger = logger;
             var htmlGenerator = new HtmlGenerator(Logger);
             var fileReader = new FileReader(Logger);
-            var apiGenerator = new ApiResponseGenerator(Logger);
+            var apiGenerator = new DefaultResponseGenerator(Logger);
 
             this.generators = [
                 fileReader,

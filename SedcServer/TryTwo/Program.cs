@@ -2,7 +2,7 @@
 using Sedc.Server.Interface.Configuration;
 
 using TryTwo;
-using TryTwo.controllers;
+using TryTwo.Controllers;
 
 
 var port = 668; //the neighbour of the beast;

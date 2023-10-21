@@ -75,7 +75,9 @@ namespace Sedc.Server.Core
 
         public void RegisterController<T>(string sitePath) where T: IController
         {
-            // throw new NotImplementedException();
+            var generator = ApiResponseGenerator.Create<T>(sitePath, Logger);
+            processor.RegisterGenerator(generator);
+
         }
     }
 
